@@ -1,0 +1,133 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Visitor Tracker App
+
+# Add Parameters section for better tag management
+Parameters:
+  Project:
+    Type: String
+    Default: "CV-Challenge"
+    Description: Project name for resource tagging
+  Environment:
+    Type: String
+    Default: "Production"
+    Description: Environment name
+  Owner:
+    Type: String
+    Default: "Isaac-Hasbani"
+    Description: Resource owner
+  CostCenter:
+    Type: String
+    Default: "Personal"
+    Description: Cost center for billing
+
+Globals:
+  Function:
+    Timeout: 3
+    LoggingConfig:
+      LogFormat: JSON
+    # Global tags that apply to all Lambda functions
+    Tags:
+      Project: !Ref Project
+      Environment: !Ref Environment
+      Owner: !Ref Owner
+      CostCenter: !Ref CostCenter
+      Purpose: "Portfolio-Website"
+      DeployedBy: "SAM"
+      Component: "Backend"
+
+Resources:
+  # Lambda function to track visits and store them in VisitsTable
+  TrackVisitsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: track_visits/
+      Handler: app.lambda_handler
+      Runtime: python3.11
+      Architectures:
+        - x86_64
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref VisitsTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref VisitsTable
+      Events:
+        TrackVisitsApi:
+          Type: Api
+          Properties:
+            Path: /track-visits
+            Method: get
+      # Additional tags specific to this function
+      Tags:
+        FunctionPurpose: "Track-Visits"
+
+  # Lambda function to get the visit count from VisitsTable
+  GetVisitCountFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: get_visit_count/
+      Handler: app.lambda_handler
+      Runtime: python3.11
+      MemorySize: 128
+      Timeout: 3
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref VisitsTable
+      Events:
+        VisitorCount:
+          Type: Api
+          Properties:
+            Path: /visitor-count
+            Method: get
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref VisitsTable
+      # Additional tags specific to this function
+      Tags:
+        FunctionPurpose: "Get-Visit-Count"
+
+  # Single DynamoDB table to store all visits
+  VisitsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: VisitsTable
+      AttributeDefinitions:
+        - AttributeName: timestamp
+          AttributeType: S
+      KeySchema:
+        - AttributeName: timestamp
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+      # Add tags to DynamoDB table
+      Tags:
+        - Key: Project
+          Value: !Ref Project
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Owner
+          Value: !Ref Owner
+        - Key: CostCenter
+          Value: !Ref CostCenter
+        - Key: Purpose
+          Value: "Portfolio-Website"
+        - Key: DeployedBy
+          Value: "SAM"
+        - Key: Component
+          Value: "Backend"
+        - Key: ResourceType
+          Value: "Database"
+
+Outputs:
+  TrackVisitsApi:
+    Description: API Gateway endpoint URL for recording visits
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/track-visits/"
+
+  GetVisitCountApi:
+    Description: API Gateway endpoint URL for getting visit count
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/visitor-count/"
+
+  VisitsTable:
+    Description: DynamoDB table for tracking visits
+    Value: !Ref VisitsTable

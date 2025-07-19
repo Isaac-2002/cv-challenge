@@ -1,0 +1,166 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Static website for Isaac Hasbani's CV with CloudFront HTTPS
+
+Parameters:
+  Environment:
+    Type: String
+    Default: Production
+    Description: Environment name
+  Project:
+    Type: String
+    Default: "CV-Challenge"
+    Description: Project name for resource tagging
+  Owner:
+    Type: String
+    Default: "Isaac-Hasbani"
+    Description: Resource owner
+  CostCenter:
+    Type: String
+    Default: "Personal"
+    Description: Cost center for billing
+
+Resources:
+  # S3 Bucket (no longer needs website configuration)
+  CVWebsiteBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      VersioningConfiguration:
+        Status: Enabled
+      # Add tags to S3 bucket
+      Tags:
+        - Key: Project
+          Value: !Ref Project
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Owner
+          Value: !Ref Owner
+        - Key: CostCenter
+          Value: !Ref CostCenter
+        - Key: Purpose
+          Value: "Portfolio-Website"
+        - Key: DeployedBy
+          Value: "SAM"
+        - Key: Component
+          Value: "Frontend"
+        - Key: ResourceType
+          Value: "Storage"
+
+  # Origin Access Control for secure CloudFront access
+  OriginAccessControl:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: !Sub "${AWS::StackName}-OAC"
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
+  # CloudFront Distribution with HTTPS
+  CloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Origins:
+          - Id: S3Origin
+            DomainName: !GetAtt CVWebsiteBucket.RegionalDomainName
+            S3OriginConfig:
+              OriginAccessIdentity: ""
+            OriginAccessControlId: !GetAtt OriginAccessControl.Id
+        
+        DefaultCacheBehavior:
+          TargetOriginId: S3Origin
+          ViewerProtocolPolicy: redirect-to-https
+          Compress: true
+          AllowedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+          CachedMethods:
+            - GET
+            - HEAD
+          CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad  # AWS Managed CachingOptimized
+          OriginRequestPolicyId: 88a5eaf4-2fd4-4709-b370-b4c650ea3fcf  # AWS Managed CORS-S3Origin
+        
+        Enabled: true
+        DefaultRootObject: index.html
+        
+        CustomErrorResponses:
+          - ErrorCode: 404
+            ResponseCode: 200
+            ResponsePagePath: /index.html
+            ErrorCachingMinTTL: 300
+          - ErrorCode: 403
+            ResponseCode: 200
+            ResponsePagePath: /index.html
+            ErrorCachingMinTTL: 300
+        
+        ViewerCertificate:
+          CloudFrontDefaultCertificate: true
+        
+        PriceClass: PriceClass_100
+        IPV6Enabled: true
+      # Add tags to CloudFront distribution
+      Tags:
+        - Key: Project
+          Value: !Ref Project
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Owner
+          Value: !Ref Owner
+        - Key: CostCenter
+          Value: !Ref CostCenter
+        - Key: Purpose
+          Value: "Portfolio-Website"
+        - Key: DeployedBy
+          Value: "SAM"
+        - Key: Component
+          Value: "Frontend"
+        - Key: ResourceType
+          Value: "CDN"
+
+  # Update bucket policy to only allow CloudFront access
+  CVWebsiteBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref CVWebsiteBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: AllowCloudFrontServicePrincipal
+            Effect: Allow
+            Principal:
+              Service: cloudfront.amazonaws.com
+            Action: "s3:GetObject"
+            Resource: !Sub "${CVWebsiteBucket.Arn}/*"
+            Condition:
+              StringEquals:
+                "AWS:SourceArn": !Sub "arn:aws:cloudfront::${AWS::AccountId}:distribution/${CloudFrontDistribution}"
+
+Outputs:
+  CVWebsiteBucket:
+    Description: Name of the S3 bucket for the CV website
+    Value: !Ref CVWebsiteBucket
+    Export:
+      Name: !Sub "${AWS::StackName}-CVWebsiteBucket"
+  
+  CloudFrontDistributionId:
+    Description: CloudFront Distribution ID
+    Value: !Ref CloudFrontDistribution
+    Export:
+      Name: !Sub "${AWS::StackName}-CloudFrontDistributionId"
+  
+  WebsiteURL:
+    Description: HTTPS URL of the CV website via CloudFront
+    Value: !Sub "https://${CloudFrontDistribution.DomainName}"
+    Export:
+      Name: !Sub "${AWS::StackName}-WebsiteURL"
+  
+  CloudFrontDomainName:
+    Description: CloudFront domain name
+    Value: !GetAtt CloudFrontDistribution.DomainName

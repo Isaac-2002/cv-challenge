@@ -1,0 +1,64 @@
+name: Deploy Frontend to AWS
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/deploy-frontend.yml'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout source code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install AWS SAM CLI
+      run: |
+        pip install aws-sam-cli
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-west-2
+
+    - name: SAM Build
+      working-directory: frontend
+      run: sam build
+
+    - name: SAM Deploy
+      working-directory: frontend
+      run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name cv-frontend --capabilities CAPABILITY_IAM --region eu-west-2
+
+    - name: Wait for stack to be ready
+      run: |
+        echo "Waiting for stack to be fully deployed..."
+        aws cloudformation wait stack-update-complete --stack-name cv-frontend --region eu-west-2
+
+    - name: Upload index.html to S3
+      working-directory: frontend
+      run: |
+        # Get the bucket name from CloudFormation outputs
+        echo "Querying CloudFormation stack for bucket name..."
+        BUCKET_NAME=$(aws cloudformation describe-stacks --stack-name cv-frontend --region eu-west-2 --query 'Stacks[0].Outputs[?OutputKey==`CVWebsiteBucket`].OutputValue' --output text)
+        echo "Retrieved bucket name: $BUCKET_NAME"
+        
+        if [ -n "$BUCKET_NAME" ] && [ "$BUCKET_NAME" != "None" ]; then
+          echo "Uploading index.html to S3 bucket: $BUCKET_NAME"
+          aws s3 cp index.html s3://${BUCKET_NAME}/index.html --cache-control "no-cache" --region eu-west-2
+        else
+          echo "Could not find bucket name from CloudFormation stack"
+          echo "Available outputs:"
+          aws cloudformation describe-stacks --stack-name cv-frontend --region eu-west-2 --query 'Stacks[0].Outputs'
+          exit 1
+        fi 

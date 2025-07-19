@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Isaac – CV</title>
+  <style>
+    :root {
+      --primary:#222;
+      --accent:#2a7ae2;
+      --font:'Helvetica Neue', Arial, sans-serif;
+    }
+    * { box-sizing:border-box; }
+    body {
+      margin:0;
+      font-family:var(--font);
+      color:var(--primary);
+      line-height:1.55;
+      background:#f8f8f8;
+    }
+    .wrapper {
+      max-width:840px;
+      margin:40px auto;
+      padding:48px 56px;
+      background:#fff;
+      box-shadow:0 4px 12px rgba(0,0,0,.06);
+      border-radius:12px;
+    }
+    h1 {
+      margin:0 0 12px;
+      font-size:2.25rem;
+      letter-spacing:0.5px;
+    }
+    h2 {
+      margin:40px 0 16px;
+      font-size:1.25rem;
+      color:var(--accent);
+      text-transform:uppercase;
+      letter-spacing:1px;
+      border-bottom:2px solid var(--accent);
+      padding-bottom:4px;
+    }
+    .contact {
+      display:flex;
+      flex-wrap:wrap;
+      gap:16px;
+      font-size:0.95rem;
+      margin-bottom:24px;
+    }
+    .contact a { color:var(--accent); text-decoration:none; }
+    .item { margin-bottom:20px; }
+    .item-header {
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:4px;
+      font-weight:600;
+    }
+    .item-header .date {
+      font-weight:400;
+      font-style:italic;
+    }
+    ul {
+      margin:6px 0 0 20px;
+      padding:0;
+    }
+    li { margin-bottom:4px; }
+    @media print {
+      body { background:#fff; }
+      .wrapper {
+        margin:0;
+        box-shadow:none;
+        border:none;
+        padding:0 0 0 0;
+      }
+      h1 { font-size:28px; }
+      h2 { font-size:16px; margin-top:24px; }
+      .contact { font-size:12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <h1>Isaac Hasbani n1</h1>
+    <div class="contact">
+      <span>Ihasbani.mam2025@london.edu</span>
+      <span>+44&nbsp;(0)&nbsp;7737&nbsp;244681</span>
+      <a href="https://www.linkedin.com/in/isaachasbani">linkedin.com/in/isaachasbani</a>
+    </div>
+
+    <h2>Education</h2>
+    <div class="item">
+      <div class="item-header">
+        <span>London Business School — Master in Analytics and Management</span>
+        <span class="date">London, UK&nbsp;|&nbsp;2024 – 2025</span>
+      </div>
+      <div>
+        Key Modules: A/B Testing and Business Experimentation, Digital Strategy, Data Science for Business, Data Management, Network Science.<br>
+        Selected for the dean's honours list.
+      </div>
+    </div>
+    <div class="item">
+      <div class="item-header">
+        <span>Università Commerciale Luigi Bocconi — BSc Economics, Management & Computer Science</span>
+        <span class="date">Milan, Italy&nbsp;|&nbsp;2021 – 2024</span>
+      </div>
+      <div>
+        Key Modules: Computer Programming, Big Data and Databases, IT Law, IT Management.<br>
+        Final Grade: 108/110.
+      </div>
+    </div>
+    <div class="item">
+      <div class="item-header">
+        <span>HEC Paris — Exchange Semester</span>
+        <span class="date">Jouy‑en‑Josas, France&nbsp;|&nbsp;2023</span>
+      </div>
+      <div>
+        Key Modules: Data Modelling, Marketing Management, Purchasing and Supply Management.
+      </div>
+    </div>
+
+    <h2>Business Experience</h2>
+    <div class="item">
+      <div class="item-header">
+        <span>Amazon Web Services — Customer Optimization Intern</span>
+        <span class="date">London, UK&nbsp;|&nbsp;2025</span>
+      </div>
+      <ul>
+        <li>Analyse customer usage patterns in the cloud, developing recommendations based on the AWS well‑architected framework.</li>
+        <li>Support specialists in customer engagements by attending meetings and preparing communications.</li>
+        <li>Gain exposure to AWS services for compute, storage and analytics; completed the AI practitioner certification.</li>
+      </ul>
+    </div>
+    <div class="item">
+      <div class="item-header">
+        <span>Kairos Partners — Summer Intern</span>
+        <span class="date">Milan, Italy&nbsp;|&nbsp;2023</span>
+      </div>
+      <ul>
+        <li>Generated €15M in AUM by identifying and cold‑calling 80+ institutional prospects monthly.</li>
+        <li>Developed a data pipeline to automate market data collection and visualization, cutting pitch preparation time by 30%.</li>
+        <li>Worked cross‑functionally to onboard seven high‑value clients, delivering tailored investment solutions.</li>
+      </ul>
+    </div>
+    <div class="item">
+      <div class="item-header">
+        <span>Bocconi Data Science Association — Lead Researcher</span>
+        <span class="date">Milan, Italy&nbsp;|&nbsp;2023 – 2024</span>
+      </div>
+      <ul>
+        <li>Organised conferences on emerging technologies (Cloud Computing, GenAI, IoT), growing membership from 30 to 100+ students.</li>
+        <li>Led a team of six to build an AI‑powered chatbot that autonomously resolves 75% of Bocconi's administrative queries.</li>
+      </ul>
+    </div>
+
+    <h2>Additional Information</h2>
+    <div class="item">
+      <strong>Projects:</strong> Developing an AI‑powered web app to streamline master's applications — cutting cost and time while offering personalised, school‑specific guidance to students.<br>
+      <strong>Tech Skills:</strong> Python, R, SQL, Gen AI (deeplearning.ai), AWS Cloud Practitioner.<br>
+      <strong>Languages:</strong> Italian (native), English (fluent), French (fluent), Spanish (basic).<br>
+      <strong>Interests:</strong> Entrepreneurship (London VC network), International Geopolitics, Formula&nbsp;1.
+    </div>
+  </div>
+  <script>
+    // Replace these with your actual deployed API Gateway URLs
+    const countUrl = "https://4zzy88fci4.execute-api.eu-west-2.amazonaws.com/Prod/visitor-count/";
+    const trackUrl = "https://4zzy88fci4.execute-api.eu-west-2.amazonaws.com/Prod/track-visits/";
+  
+    // Update the visit count in the page
+    fetch(countUrl)
+      .then(res => res.json())
+      .then(data => {
+        const countElement = document.createElement("p");
+        countElement.textContent = `This CV has been viewed ${data.count} times.`;
+        document.querySelector(".wrapper").prepend(countElement);
+      });
+  
+    // Track this visit
+    fetch(trackUrl, { method: "GET" });
+  </script>  
+</body>
+</html>
+

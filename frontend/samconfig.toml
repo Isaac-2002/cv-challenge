@@ -1,0 +1,13 @@
+version = 0.1
+
+[default.deploy.parameters]
+stack_name = "cv-frontend"
+resolve_s3 = true
+s3_prefix = "cv-frontend"
+region = "eu-west-2"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+disable_rollback = true
+image_repositories = []
+# Add stack-level tags
+tags = "Project=CV-Challenge Environment=Production Owner=Isaac-Hasbani CostCenter=Personal Purpose=Portfolio-Website DeployedBy=SAM Component=Frontend"

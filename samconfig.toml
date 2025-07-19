@@ -1,0 +1,56 @@
+# Master SAM Configuration for Visitor Tracker App
+# More information about the configuration file can be found here:
+# https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-config.html
+version = 0.1
+
+# Backend Configuration
+[default.global.parameters]
+stack_name = "visitor-tracker-app"
+
+[backend.global.parameters]
+stack_name = "cv-challenge-backend"
+
+[backend.build.parameters]
+cached = true
+parallel = true
+
+[backend.validate.parameters]
+lint = true
+
+[backend.deploy.parameters]
+capabilities = "CAPABILITY_IAM"
+confirm_changeset = true
+resolve_s3 = true
+stack_name = "cv-challenge-backend"
+s3_prefix = "cv-challenge-backend"
+region = "eu-west-2"
+disable_rollback = false
+image_repositories = []
+tags = "Project=CV-Challenge Environment=Production Owner=Isaac-Hasbani CostCenter=Personal Purpose=Portfolio-Website DeployedBy=SAM Component=Backend"
+
+[backend.package.parameters]
+resolve_s3 = true
+
+[backend.sync.parameters]
+watch = true
+
+[backend.local_start_api.parameters]
+warm_containers = "EAGER"
+
+[backend.local_start_lambda.parameters]
+warm_containers = "EAGER"
+
+# Frontend Configuration
+[frontend.global.parameters]
+stack_name = "cv-frontend"
+
+[frontend.deploy.parameters]
+stack_name = "cv-frontend"
+resolve_s3 = true
+s3_prefix = "cv-frontend"
+region = "eu-west-2"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+disable_rollback = true
+image_repositories = []
+tags = "Project=CV-Challenge Environment=Production Owner=Isaac-Hasbani CostCenter=Personal Purpose=Portfolio-Website DeployedBy=SAM Component=Frontend" 
