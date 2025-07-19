@@ -170,7 +170,7 @@
       .then(res => res.json())
       .then(data => {
         const countElement = document.createElement("p");
-        countElement.textContent = `This CV has been viewed ${data.count} times.`;
+        countElement.textContent = `You're visitor number ${data.count} to view this CV!`;
         document.querySelector(".wrapper").prepend(countElement);
       });
   
