@@ -142,3 +142,7 @@ All resources are tagged with:
 ## 📝 License
 
 This project is part of a portfolio and is intended for demonstration purposes. 
+
+## 📅 Last Updated
+
+Last updated: March 2024 
