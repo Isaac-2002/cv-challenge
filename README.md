@@ -1,35 +1,15 @@
-# Visitor Tracker App
+# CV with Visitor Tracker
 
-A full-stack serverless application built with AWS SAM that tracks website visits and displays real-time visitor counts. This project demonstrates a modern cloud architecture using AWS Lambda, API Gateway, DynamoDB, S3, and CloudFront.
-
-## 🏗️ Architecture
-
-```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   CloudFront    │───▶│   S3 Bucket     │    │   API Gateway   │
-│   (CDN)         │    │   (Frontend)    │    │   (REST API)    │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-                                                       │
-                                              ┌─────────────────┐
-                                              │  Lambda Functions│
-                                              │  - Track Visits │
-                                              │  - Get Count    │
-                                              └─────────────────┘
-                                                       │
-                                              ┌─────────────────┐
-                                              │   DynamoDB      │
-                                              │  (Visit Data)   │
-                                              └─────────────────┘
-```
+A simple serverless application built to get familiar with AWS services and serverless architecture. The application displays a CV website and tracks the number of visits using AWS Lambda, API Gateway, DynamoDB, S3, and CloudFront.
 
 ## 📁 Project Structure
 
 ```
-/visitor-tracker-app
 ├── frontend/
-│   ├── index.html          # Static website files
+│   ├── index.html          # Static CV website
 │   ├── template.yaml       # CloudFront + S3 infrastructure
-│   └── samconfig.toml      # Frontend SAM configuration
+│   ├── samconfig.toml      # Frontend SAM configuration
+│   └── quick-deploy.sh     # Fast deployment script for content changes
 │
 ├── backend/
 │   ├── track_visits/       # Lambda function to track visits
@@ -47,40 +27,41 @@ A full-stack serverless application built with AWS SAM that tracks website visit
 
 ## 🚀 Deployment
 
-This project uses AWS SAM (Serverless Application Model) for infrastructure as code and GitHub Actions for CI/CD.
-
 ### Prerequisites
 
 - AWS CLI configured with appropriate permissions
 - SAM CLI installed
-- GitHub repository with AWS credentials configured as secrets:
-  - `AWS_ACCESS_KEY_ID`
-  - `AWS_SECRET_ACCESS_KEY`
 
-### Automatic Deployment
+### Local Deployment
 
-The application deploys automatically via GitHub Actions:
+Deploy the complete stack:
+
+```bash
+# Deploy backend
+cd backend
+sam build && sam deploy
+
+# Deploy frontend
+cd ../frontend
+sam build && sam deploy
+```
+
+For quick content updates (index.html only):
+```bash
+cd frontend
+./quick-deploy.sh
+```
+
+### CI/CD Deployment
+
+The application deploys automatically via GitHub Actions when pushing to the `main` branch:
 
 - **Backend**: Triggers on changes to `backend/` directory
 - **Frontend**: Triggers on changes to `frontend/` directory
 
-### Manual Deployment
-
-#### Backend (Lambda + API + DynamoDB)
-```bash
-cd backend
-sam build
-sam deploy --config-env backend
-```
-
-#### Frontend (S3 + CloudFront)
-```bash
-cd frontend
-sam build
-sam deploy --config-env frontend
-```
-
-## 🛠️ Development
+Set up GitHub repository secrets:
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
 
 ### Local Testing
 
@@ -91,58 +72,6 @@ sam build
 sam local start-api
 ```
 
-### Backend Functions
+## Architecture
 
-- `TrackVisitsFunction`: Records visitor data in DynamoDB
-- `GetVisitCountFunction`: Retrieves current visit count
-
-### Frontend
-
-Static HTML website served via CloudFront with HTTPS certificate and caching optimization.
-
-## 🔧 Configuration
-
-### Environment Variables
-
-Backend functions use environment variables for:
-- DynamoDB table names
-- CORS settings
-- API Gateway configuration
-
-### Tags
-
-All resources are tagged with:
-- Project: CV-Challenge
-- Environment: Production
-- Owner: Isaac-Hasbani
-- Cost Center: Personal
-- Purpose: Portfolio-Website
-
-## 📊 Monitoring
-
-- CloudWatch logs for Lambda functions
-- CloudFront metrics for frontend performance
-- DynamoDB metrics for database operations
-
-## 🔐 Security
-
-- S3 bucket with public access blocked (served via CloudFront)
-- Lambda functions with minimal IAM permissions
-- API Gateway with CORS configured
-- CloudFront with HTTPS enforcement
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test locally
-5. Submit a pull request
-
-## 📝 License
-
-This project is part of a portfolio and is intended for demonstration purposes. 
-
-## 📅 Last Updated
-
-Last updated: March 2024 
+*Architecture diagram will be added here* 
