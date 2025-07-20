@@ -67,4 +67,5 @@ Set up GitHub repository secrets:
 
 ## Architecture
 
-*Architecture diagram will be added here* 
+![Architecture Diagram](Architecture%20Diagram.png)
+
