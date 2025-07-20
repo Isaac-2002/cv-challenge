@@ -3,7 +3,7 @@
 version = 0.1
 
 [default.global.parameters]
-stack_name = "sam-app"
+stack_name = "cv-challenge-backend"
 
 [default.build.parameters]
 cached = true

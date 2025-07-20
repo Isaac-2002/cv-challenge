@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: Static website for Isaac Hasbani's CV with CloudFront HTTPS
+Description: Static website for Isaac Hasbani's CV with CloudFront HTTPS and custom domain
 
 Parameters:
   Environment:
@@ -19,8 +19,39 @@ Parameters:
     Type: String
     Default: "Personal"
     Description: Cost center for billing
+  DomainName:
+    Type: String
+    Default: "www.isaachasbani.com"
+    Description: Custom domain name for the website
+  CertificateArn:
+    Type: String
+    Default: "arn:aws:acm:us-east-1:825765413106:certificate/f4712791-9118-4c00-88bb-4d4d8dd4e6b9"
+    Description: SSL Certificate ARN (must be in us-east-1 for CloudFront)
 
 Resources:
+  # Route 53 Hosted Zone for the domain
+  HostedZone:
+    Type: AWS::Route53::HostedZone
+    Properties:
+      Name: !Ref DomainName
+      HostedZoneConfig:
+        Comment: !Sub "Hosted zone for ${DomainName}"
+      HostedZoneTags:
+        - Key: Project
+          Value: !Ref Project
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Owner
+          Value: !Ref Owner
+        - Key: CostCenter
+          Value: !Ref CostCenter
+        - Key: Purpose
+          Value: "Portfolio-Website"
+        - Key: DeployedBy
+          Value: "SAM"
+        - Key: Component
+          Value: "DNS"
+
   # S3 Bucket (no longer needs website configuration)
   CVWebsiteBucket:
     Type: AWS::S3::Bucket
@@ -61,11 +92,15 @@ Resources:
         SigningBehavior: always
         SigningProtocol: sigv4
 
-  # CloudFront Distribution with HTTPS
+  # CloudFront Distribution with HTTPS and custom domain
   CloudFrontDistribution:
     Type: AWS::CloudFront::Distribution
     Properties:
       DistributionConfig:
+        # Custom domain aliases
+        Aliases:
+          - !Ref DomainName
+        
         Origins:
           - Id: S3Origin
             DomainName: !GetAtt CVWebsiteBucket.RegionalDomainName
@@ -100,8 +135,11 @@ Resources:
             ResponsePagePath: /index.html
             ErrorCachingMinTTL: 300
         
+        # Custom SSL certificate configuration
         ViewerCertificate:
-          CloudFrontDefaultCertificate: true
+          AcmCertificateArn: !Ref CertificateArn
+          SslSupportMethod: sni-only
+          MinimumProtocolVersion: TLSv1.2_2021
         
         PriceClass: PriceClass_100
         IPV6Enabled: true
@@ -123,6 +161,30 @@ Resources:
           Value: "Frontend"
         - Key: ResourceType
           Value: "CDN"
+
+  # DNS A record pointing to CloudFront
+  DNSRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: !Ref HostedZone
+      Name: !Ref DomainName
+      Type: A
+      AliasTarget:
+        DNSName: !GetAtt CloudFrontDistribution.DomainName
+        HostedZoneId: Z2FDTNDATAQYW2  # CloudFront hosted zone ID (fixed value)
+        EvaluateTargetHealth: false
+
+  # DNS AAAA record for IPv6 support
+  DNSRecordIPv6:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: !Ref HostedZone
+      Name: !Ref DomainName
+      Type: AAAA
+      AliasTarget:
+        DNSName: !GetAtt CloudFrontDistribution.DomainName
+        HostedZoneId: Z2FDTNDATAQYW2  # CloudFront hosted zone ID (fixed value)
+        EvaluateTargetHealth: false
 
   # Update bucket policy to only allow CloudFront access
   CVWebsiteBucketPolicy:
@@ -161,6 +223,24 @@ Outputs:
     Export:
       Name: !Sub "${AWS::StackName}-WebsiteURL"
   
+  CustomDomainURL:
+    Description: Custom domain URL for the CV website
+    Value: !Sub "https://${DomainName}"
+    Export:
+      Name: !Sub "${AWS::StackName}-CustomDomainURL"
+  
   CloudFrontDomainName:
     Description: CloudFront domain name
     Value: !GetAtt CloudFrontDistribution.DomainName
+
+  HostedZoneId:
+    Description: Route 53 Hosted Zone ID
+    Value: !Ref HostedZone
+    Export:
+      Name: !Sub "${AWS::StackName}-HostedZoneId"
+
+  NameServers:
+    Description: Name servers for the hosted zone
+    Value: !Join [", ", !GetAtt HostedZone.NameServers]
+    Export:
+      Name: !Sub "${AWS::StackName}-NameServers"

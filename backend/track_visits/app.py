@@ -22,4 +22,4 @@ def lambda_handler(event, context):
             'Access-Control-Allow-Origin': '*'
         },
         'body': json.dumps({'message': 'Visit recorded'})
-    }
+    }# Test comment

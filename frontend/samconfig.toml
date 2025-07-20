@@ -1,5 +1,12 @@
 version = 0.1
 
+[default.global.parameters]
+stack_name = "cv-frontend"
+
+[default.build.parameters]
+cached = true
+parallel = true
+
 [default.deploy.parameters]
 stack_name = "cv-frontend"
 resolve_s3 = true
@@ -11,3 +18,6 @@ disable_rollback = true
 image_repositories = []
 # Add stack-level tags
 tags = "Project=CV-Challenge Environment=Production Owner=Isaac-Hasbani CostCenter=Personal Purpose=Portfolio-Website DeployedBy=SAM Component=Frontend"
+
+[default.package.parameters]
+resolve_s3 = true
