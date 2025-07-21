@@ -4,6 +4,10 @@ A simple serverless application built to get familiar with AWS services and serv
 
 You can check the result at: www.isaachasbani.com
 
+## Architecture
+
+![Architecture Diagram](Architecture%20Diagram.png)
+
 ## 📁 Project Structure
 
 ```
@@ -65,7 +69,5 @@ Set up GitHub repository secrets:
 - `AWS_ACCESS_KEY_ID`
 - `AWS_SECRET_ACCESS_KEY`
 
-## Architecture
 
-![Architecture Diagram](Architecture%20Diagram.png)
 
