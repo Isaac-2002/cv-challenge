@@ -2,164 +2,448 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Isaac – CV</title>
+  <title>Isaac Hasbani – CV</title>
   <style>
     :root {
-      --primary:#222;
-      --accent:#2a7ae2;
-      --font:'Helvetica Neue', Arial, sans-serif;
+      --primary: #1a1a1a;
+      --accent: #4f7fff;
+      --accent-light: #6b92ff;
+      --text-muted: #6b7280;
+      --background: #f8fafc;
+      --white: #ffffff;
+      --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      --shadow-light: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+      --shadow-medium: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      --shadow-large: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
     }
-    * { box-sizing:border-box; }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-      margin:0;
-      font-family:var(--font);
-      color:var(--primary);
-      line-height:1.55;
-      background:#f8f8f8;
+      font-family: var(--font-primary);
+      background: var(--background);
+      color: var(--primary);
+      line-height: 1.6;
+      min-height: 100vh;
     }
-    .wrapper {
-      max-width:840px;
-      margin:40px auto;
-      padding:48px 56px;
-      background:#fff;
-      box-shadow:0 4px 12px rgba(0,0,0,.06);
-      border-radius:12px;
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
     }
-    h1 {
-      margin:0 0 12px;
-      font-size:2.25rem;
-      letter-spacing:0.5px;
+
+    /* Hero Section */
+    .hero {
+      background: var(--white);
+      border-radius: 24px;
+      padding: 4rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-large);
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 4rem;
+      align-items: center;
     }
-    h2 {
-      margin:40px 0 16px;
-      font-size:1.25rem;
-      color:var(--accent);
-      text-transform:uppercase;
-      letter-spacing:1px;
-      border-bottom:2px solid var(--accent);
-      padding-bottom:4px;
+
+    .profile-photo {
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background-image: url('images/my_pic.png');
+      background-size: cover;
+      background-position: center;
+      box-shadow: var(--shadow-medium);
+      margin: 0 auto;
     }
-    .contact {
-      display:flex;
-      flex-wrap:wrap;
-      gap:16px;
-      font-size:0.95rem;
-      margin-bottom:24px;
+
+    .hero-content h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      line-height: 1.1;
     }
-    .contact a { color:var(--accent); text-decoration:none; }
-    .item { margin-bottom:20px; }
-    .item-header {
-      display:flex;
-      justify-content:space-between;
-      flex-wrap:wrap;
-      gap:4px;
-      font-weight:600;
+
+    .hero-content h1 .name {
+      color: var(--accent);
     }
-    .item-header .date {
-      font-weight:400;
-      font-style:italic;
+
+    .hero-content .subtitle {
+      font-size: 1.5rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      font-weight: 500;
     }
-    ul {
-      margin:6px 0 0 20px;
-      padding:0;
+
+    .hero-content .description {
+      font-size: 1.125rem;
+      line-height: 1.7;
+      color: var(--text-muted);
+      margin-bottom: 3rem;
+      max-width: 600px;
     }
-    li { margin-bottom:4px; }
-    @media print {
-      body { background:#fff; }
-      .wrapper {
-        margin:0;
-        box-shadow:none;
-        border:none;
-        padding:0 0 0 0;
+
+    /* Technologies Section */
+    .technologies {
+      margin-bottom: 3rem;
+    }
+
+    .technologies h3 {
+      font-size: 0.875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+    }
+
+    .tech-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .tech-badge {
+      background: var(--accent);
+      color: var(--white);
+      padding: 0.75rem 1.5rem;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.875rem;
+      letter-spacing: 0.5px;
+      box-shadow: var(--shadow-light);
+      transition: all 0.2s ease;
+    }
+
+    .tech-badge:hover {
+      background: var(--accent-light);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-medium);
+    }
+
+    /* Download Button */
+    .download-btn {
+      background: var(--accent);
+      color: var(--white);
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: var(--shadow-medium);
+      transition: all 0.2s ease;
+    }
+
+    .download-btn:hover {
+      background: var(--accent-light);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-large);
+    }
+
+    .download-btn::before {
+      content: "↓";
+      font-size: 1.2rem;
+    }
+
+    /* Content Sections */
+    .content-section {
+      background: var(--white);
+      border-radius: 24px;
+      padding: 3rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-medium);
+    }
+
+    .content-section h2 {
+      font-size: 1.875rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 3px solid var(--accent);
+      display: inline-block;
+    }
+
+    .experience-item {
+      margin-bottom: 2.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .experience-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+
+    .experience-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .experience-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .experience-company {
+      font-size: 1.125rem;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .experience-date {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .experience-content {
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .experience-content ul {
+      margin: 1rem 0;
+      padding-left: 1.5rem;
+    }
+
+    .experience-content li {
+      margin-bottom: 0.5rem;
+    }
+
+    /* Visitor Counter */
+    .visitor-counter {
+      text-align: center;
+      margin-top: 2rem;
+      padding: 1rem;
+      background: var(--white);
+      border-radius: 12px;
+      box-shadow: var(--shadow-light);
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    /* Contact Info */
+    .contact-info {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      font-size: 0.95rem;
+    }
+
+    .contact-info a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .contact-info a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 2rem;
+        text-align: center;
       }
-      h1 { font-size:28px; }
-      h2 { font-size:16px; margin-top:24px; }
-      .contact { font-size:12px; }
+
+      .profile-photo {
+        width: 200px;
+        height: 200px;
+        font-size: 3rem;
+      }
+
+      .hero-content h1 {
+        font-size: 2.5rem;
+      }
+
+      .container {
+        padding: 1rem;
+      }
+
+      .content-section {
+        padding: 2rem;
+      }
+
+      .experience-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media print {
+      body { background: var(--white); }
+      .container { padding: 0; }
+      .hero, .content-section { box-shadow: none; margin-bottom: 1rem; }
+      .visitor-counter { display: none; }
     }
   </style>
 </head>
 <body>
-  <div class="wrapper">
-    <h1>Isaac Hasbani</h1>
-    <div class="contact">
-      <span>Ihasbani.mam2025@london.edu</span>
-      <span>+44&nbsp;(0)&nbsp;7737&nbsp;244681</span>
-      <a href="https://www.linkedin.com/in/isaachasbani">linkedin.com/in/isaachasbani</a>
-    </div>
+  <div class="container">
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="profile-photo">
+        <!-- Profile image will be displayed via CSS background-image -->
+      </div>
+      <div class="hero-content">
+        <h1>Hello, I'm <span class="name">Isaac Hasbani</span></h1>
+        <div class="subtitle">Analytics & Management Graduate • Cloud Enthusiast</div>
+        <div class="description">
+          I'm a passionate analyst and cloud enthusiast with experience in business optimization, 
+          data science, and AWS cloud technologies. Currently pursuing my Master's at London Business School, 
+          I specialize in turning data into actionable business insights and building scalable cloud solutions.
+        </div>
+        
+        <div class="technologies">
+          <h3>Core Technologies</h3>
+          <div class="tech-grid">
+            <span class="tech-badge">Python</span>
+            <span class="tech-badge">R</span>
+            <span class="tech-badge">SQL</span>
+            <span class="tech-badge">AWS</span>
+            <span class="tech-badge">Gen AI</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <h2>Education</h2>
-    <div class="item">
-      <div class="item-header">
-        <span>London Business School — Master in Analytics and Management</span>
-        <span class="date">London, UK&nbsp;|&nbsp;2024 – 2025</span>
+    <!-- Education Section -->
+    <section class="content-section">
+      <h2>Education</h2>
+      
+      <div class="experience-item">
+        <div class="experience-header">
+          <div>
+            <div class="experience-title">Master in Analytics and Management</div>
+            <div class="experience-company">London Business School</div>
+          </div>
+          <div class="experience-date">London, UK | 2024 – 2025</div>
+        </div>
+        <div class="experience-content">
+          Key Modules: A/B Testing and Business Experimentation, Digital Strategy, Data Science for Business, Data Management, Network Science.<br>
+          <strong>Selected for the dean's honours list.</strong>
+        </div>
       </div>
-      <div>
-        Key Modules: A/B Testing and Business Experimentation, Digital Strategy, Data Science for Business, Data Management, Network Science.<br>
-        Selected for the dean's honours list.
-      </div>
-    </div>
-    <div class="item">
-      <div class="item-header">
-        <span>Università Commerciale Luigi Bocconi — BSc Economics, Management & Computer Science</span>
-        <span class="date">Milan, Italy&nbsp;|&nbsp;2021 – 2024</span>
-      </div>
-      <div>
-        Key Modules: Computer Programming, Big Data and Databases, IT Law, IT Management.<br>
-        Final Grade: 108/110.
-      </div>
-    </div>
-    <div class="item">
-      <div class="item-header">
-        <span>HEC Paris — Exchange Semester</span>
-        <span class="date">Jouy‑en‑Josas, France&nbsp;|&nbsp;2023</span>
-      </div>
-      <div>
-        Key Modules: Data Modelling, Marketing Management, Purchasing and Supply Management.
-      </div>
-    </div>
 
-    <h2>Business Experience</h2>
-    <div class="item">
-      <div class="item-header">
-        <span>Amazon Web Services — Customer Optimization Intern</span>
-        <span class="date">London, UK&nbsp;|&nbsp;2025</span>
+      <div class="experience-item">
+        <div class="experience-header">
+          <div>
+            <div class="experience-title">BSc Economics, Management & Computer Science</div>
+            <div class="experience-company">Università Commerciale Luigi Bocconi</div>
+          </div>
+          <div class="experience-date">Milan, Italy | 2021 – 2024</div>
+        </div>
+        <div class="experience-content">
+          Key Modules: Computer Programming, Big Data and Databases, IT Law, IT Management.<br>
+          <strong>Final Grade: 108/110.</strong>
+        </div>
       </div>
-      <ul>
-        <li>Analyse customer usage patterns in the cloud, developing recommendations based on the AWS well‑architected framework.</li>
-        <li>Support specialists in customer engagements by attending meetings and preparing communications.</li>
-        <li>Gain exposure to AWS services for compute, storage and analytics; completed the AI practitioner certification.</li>
-      </ul>
-    </div>
-    <div class="item">
-      <div class="item-header">
-        <span>Kairos Partners — Summer Intern</span>
-        <span class="date">Milan, Italy&nbsp;|&nbsp;2023</span>
-      </div>
-      <ul>
-        <li>Generated €15M in AUM by identifying and cold‑calling 80+ institutional prospects monthly.</li>
-        <li>Developed a data pipeline to automate market data collection and visualization, cutting pitch preparation time by 30%.</li>
-        <li>Worked cross‑functionally to onboard seven high‑value clients, delivering tailored investment solutions.</li>
-      </ul>
-    </div>
-    <div class="item">
-      <div class="item-header">
-        <span>Bocconi Data Science Association — Lead Researcher</span>
-        <span class="date">Milan, Italy&nbsp;|&nbsp;2023 – 2024</span>
-      </div>
-      <ul>
-        <li>Organised conferences on emerging technologies (Cloud Computing, GenAI, IoT), growing membership from 30 to 100+ students.</li>
-        <li>Led a team of six to build an AI‑powered chatbot that autonomously resolves 75% of Bocconi's administrative queries.</li>
-      </ul>
-    </div>
 
-    <h2>Additional Information</h2>
-    <div class="item">
-      <strong>Projects:</strong> Developing an AI‑powered web app to streamline master's applications — cutting cost and time while offering personalised, school‑specific guidance to students.<br>
-      <strong>Tech Skills:</strong> Python, R, SQL, Gen AI (deeplearning.ai), AWS Cloud Practitioner.<br>
-      <strong>Languages:</strong> Italian (native), English (fluent), French (fluent), Spanish (basic).<br>
-      <strong>Interests:</strong> Entrepreneurship (London VC network), International Geopolitics, Formula&nbsp;1.
+      <div class="experience-item">
+        <div class="experience-header">
+          <div>
+            <div class="experience-title">Exchange Semester</div>
+            <div class="experience-company">HEC Paris</div>
+          </div>
+          <div class="experience-date">Jouy‑en‑Josas, France | 2023</div>
+        </div>
+        <div class="experience-content">
+          Key Modules: Data Modelling, Marketing Management, Purchasing and Supply Management.
+        </div>
+      </div>
+    </section>
+
+    <!-- Business Experience Section -->
+    <section class="content-section">
+      <h2>Business Experience</h2>
+      
+      <div class="experience-item">
+        <div class="experience-header">
+          <div>
+            <div class="experience-title">Customer Optimization Intern</div>
+            <div class="experience-company">Amazon Web Services</div>
+          </div>
+          <div class="experience-date">London, UK | 2025</div>
+        </div>
+        <div class="experience-content">
+          <ul>
+            <li>Analyse customer usage patterns in the cloud, developing recommendations based on the AWS well‑architected framework.</li>
+            <li>Support specialists in customer engagements by attending meetings and preparing communications.</li>
+            <li>Gain exposure to AWS services for compute, storage and analytics; completed the Cloud practitioner certification.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="experience-item">
+        <div class="experience-header">
+          <div>
+            <div class="experience-title">Summer Intern</div>
+            <div class="experience-company">Kairos Partners</div>
+          </div>
+          <div class="experience-date">Milan, Italy | 2023</div>
+        </div>
+        <div class="experience-content">
+          <ul>
+            <li>Generated €15M in AUM by identifying and cold‑calling 80+ institutional prospects monthly.</li>
+            <li>Developed a data pipeline to automate market data collection and visualization, cutting pitch preparation time by 30%.</li>
+            <li>Worked cross‑functionally to onboard seven high‑value clients, delivering tailored investment solutions.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="experience-item">
+        <div class="experience-header">
+          <div>
+            <div class="experience-title">Lead Researcher</div>
+            <div class="experience-company">Bocconi Data Science Association</div>
+          </div>
+          <div class="experience-date">Milan, Italy | 2023 – 2024</div>
+        </div>
+        <div class="experience-content">
+          <ul>
+            <li>Organised conferences on emerging technologies (Cloud Computing, GenAI, IoT), growing membership from 30 to 100+ students.</li>
+            <li>Led a team of six to build an AI‑powered chatbot that autonomously resolves 75% of Bocconi's administrative queries.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Additional Information Section -->
+    <section class="content-section">
+      <h2>Additional Information</h2>
+      <div class="experience-content">
+        <p><strong>Projects:</strong> Developing an AI‑powered web app to streamline master's applications — cutting cost and time while offering personalised, school‑specific guidance to students.</p>
+        <p><strong>Languages:</strong> Italian (native), English (fluent), French (fluent), Spanish (basic).</p>
+        <p><strong>Interests:</strong> Entrepreneurship (London VC network), International Geopolitics, Formula&nbsp;1.</p>
+      </div>
+    </section>
+
+    <!-- Visitor Counter -->
+    <div class="visitor-counter" id="visitor-counter">
+      <!-- Visitor count will be inserted here -->
     </div>
   </div>
+
   <script>
     // Replace these with your actual deployed API Gateway URLs
     const countUrl = "https://4zzy88fci4.execute-api.eu-west-2.amazonaws.com/Prod/visitor-count/";
@@ -169,13 +453,18 @@
     fetch(countUrl)
       .then(res => res.json())
       .then(data => {
-        const countElement = document.createElement("p");
+        const countElement = document.getElementById("visitor-counter");
         countElement.textContent = `You're visitor number ${data.count} to view this CV!`;
-        document.querySelector(".wrapper").prepend(countElement);
+      })
+      .catch(err => {
+        console.log('Visitor counter not available');
       });
   
     // Track this visit
-    fetch(trackUrl, { method: "GET" });
+    fetch(trackUrl, { method: "GET" })
+      .catch(err => {
+        console.log('Visit tracking not available');
+      });
   </script>  
 </body>
 </html>
