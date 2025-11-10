@@ -2,7 +2,6 @@
 
 A simple serverless application built to get familiar with AWS services and serverless architecture. The application displays a CV website and tracks the number of visits using AWS Lambda, API Gateway, DynamoDB, S3, and CloudFront.
 
-You can check the result at: www.isaachasbani.com
 
 ## Architecture
 
